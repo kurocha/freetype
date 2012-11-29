@@ -21,7 +21,5 @@ define_package "freetype-2.4.10" do |package|
 			
 			Commands.run("make install")
 		end
-		
-		Commands.run("cp", "FindFreeType.cmake", platform.cmake_modules_path)
 	end
 end
