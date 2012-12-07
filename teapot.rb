@@ -5,15 +5,14 @@
 
 required_version "0.5"
 
-define_package "freetype" do |package|
-	package.install do |environment|
-		environment.use in: package.source_path do |config|
-			Commands.run("make", "distclean") if File.exist? "Makefile"
-			
-			Commands.run("rm", "-f", "config.mk")
+define_target "freetype" do |target|
+	target.install do |environment|
+		environment.use in: (package.path + "freetype-2.4.10") do |config|
+			Commands.run!("make", "distclean") if File.exist? "Makefile"
+			Commands.run!("rm", "-f", "config.mk")
 			
 			Commands.run("./configure",
-				"--prefix=#{environment.install_prefix}",
+				"--prefix=#{config.install_prefix}",
 				"--enable-shared=no",
 				"--enable-static=yes", 
 				*config.configure
@@ -23,7 +22,9 @@ define_package "freetype" do |package|
 		end
 	end
 	
-	package.provides 'freetype' do
+	target.depends(:platform)
+	
+	target.provides 'freetype' do
 		append buildflags {"-I" + (install_prefix + "include/freetype2").to_s}
 		append ldflags "-lfreetype"
 	end
