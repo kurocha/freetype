@@ -24,7 +24,7 @@ define_target "freetype" do |target|
 	
 	target.depends(:platform)
 	
-	target.provides 'freetype' do
+	target.provides 'Library/freetype' do
 		append buildflags {"-I" + (install_prefix + "include/freetype2").to_s}
 		append ldflags "-lfreetype"
 	end
