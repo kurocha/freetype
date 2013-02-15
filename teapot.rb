@@ -3,22 +3,21 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "0.5"
+required_version "0.6"
 
 define_target "freetype" do |target|
 	target.install do |environment|
-		environment.use in: (package.path + "freetype-2.4.10") do |config|
-			Commands.run!("make", "distclean") if File.exist? "Makefile"
-			Commands.run!("rm", "-f", "config.mk")
+		install_external(package.path, "freetype-2.4.10", environment) do |config, fresh|
+			if fresh
+				Commands.run("./configure",
+					"--prefix=#{config.install_prefix}",
+					"--enable-shared=no",
+					"--enable-static=yes", 
+					*config.configure
+				)
+			end
 			
-			Commands.run("./configure",
-				"--prefix=#{config.install_prefix}",
-				"--enable-shared=no",
-				"--enable-static=yes", 
-				*config.configure
-			)
-			
-			Commands.run("make", "install")
+			Commands.make_install
 		end
 	end
 	
