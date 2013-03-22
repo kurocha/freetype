@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-required_version "0.6"
+required_version "0.7.0"
 
 define_target "freetype" do |target|
 	target.build do |environment|
@@ -29,4 +29,9 @@ define_target "freetype" do |target|
 		append buildflags {"-I" + (install_prefix + "include/freetype2").to_s}
 		append ldflags "-lfreetype"
 	end
+end
+
+define_configuration "freetype-local" do |configuration|
+	configuration[:source] = "../"
+	configuration.import! "local"
 end
