@@ -30,8 +30,3 @@ define_target "freetype" do |target|
 		append linkflags "-lfreetype"
 	end
 end
-
-define_configuration "freetype-local" do |configuration|
-	configuration[:source] = "../"
-	configuration.import! "local"
-end
